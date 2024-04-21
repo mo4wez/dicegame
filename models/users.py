@@ -8,8 +8,6 @@ class User(Model):
     joined_at = CharField()
     invite_link = CharField()
     coins = CharField()
-    invited_users = CharField()
-
 
     class Meta:
         database = db

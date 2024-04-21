@@ -21,16 +21,16 @@ from constants.messages import (
 )
 from constants.keyboards import MAIN_MENU_KEYBOARD
 from .increase_inventory_module import increase_inventory
+from .games import show_games_list
 
 
 @Client.on_message(filters.text)
 async def menu_commands(client: Client, message: Message):
     text = message.text
     chat_id = message.chat.id
-    print('in menu_commands')
 
     if text == PLAY_GAME_TEXT:
-        print('play game')
+        await show_games_list(client, message)
     elif text == USER_ACCOUNT_TEXT:
         await user_account(client, message)
     elif text == TRANSFORM_COINS_TEXT:
@@ -75,8 +75,9 @@ async def user_account(client: Client, message: Message):
     formatted_datetime = now.strftime('%Y/%m/%d %H:%M:%S')
 
     user = User.get(User.chat_id==chat_id)
+    invitations_count = str(len(user.invitations))
 
     await client.send_message(
         chat_id=chat_id,
-        text=USER_INFORMATION_TEXT.format(user.chat_id, user.joined_at, user.invited_users, user.coins, formatted_datetime),
+        text=USER_INFORMATION_TEXT.format(user.chat_id, user.joined_at, invitations_count, user.coins, formatted_datetime),
     )

@@ -11,6 +11,12 @@ from .messages import (
     INVITE_USER_TEXT,
     TRANSFORM_NITROSEEN_TEXT,
     BACK_TEXT,
+    DICE_GAME_TEXT,
+    BOWLING_GAME_TEXT,
+    DART_GAME_TEXT,
+    BASKETBALL_GAME_TEXT,
+    FUTBALL_GAME_TEXT,
+    SLOTMACHINE_GAME_TEXT,
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -25,6 +31,16 @@ MAIN_MENU_KEYBOARD = ReplyKeyboardMarkup(
         [KeyboardButton(text=TRANSFORM_COINS_TEXT), KeyboardButton(text=USER_ACCOUNT_TEXT)],
         [KeyboardButton(text=SUPPORT_TEXT), KeyboardButton(INCREASE_INVENTORY_TEXT)],
         [KeyboardButton(text=BOOK_ICON_TEXT)]
+    ],
+    resize_keyboard=True
+)
+
+GAMES_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=DICE_GAME_TEXT), KeyboardButton(text=BOWLING_GAME_TEXT)],
+        [KeyboardButton(text=BASKETBALL_GAME_TEXT), KeyboardButton(text=FUTBALL_GAME_TEXT)],
+        [KeyboardButton(text=DART_GAME_TEXT), KeyboardButton(text=SLOTMACHINE_GAME_TEXT)],
+        [KeyboardButton(text=BACK_TEXT)]
     ],
     resize_keyboard=True
 )
