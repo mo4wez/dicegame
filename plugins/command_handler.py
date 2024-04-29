@@ -71,7 +71,7 @@ async def start(client: Client, message: Message):
                 username=username,
                 joined_at=formatted_date,
                 invite_link=generate_refferal_link(8),
-                coins=str(0),
+                coins=2000,
                 invited_users=str(0),
             )
             

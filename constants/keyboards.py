@@ -17,11 +17,14 @@ from .messages import (
     BASKETBALL_GAME_TEXT,
     FUTBALL_GAME_TEXT,
     SLOTMACHINE_GAME_TEXT,
+    DICE_BET_ON_EVEN,
+    DICE_BET_ON_ODD,
+    MAIN_CHANNEL_LINK_TEXT
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton('dice game channel', url='https://t.me/dicegametestpy')]
+        [InlineKeyboardButton('dice game channel', url=MAIN_CHANNEL_LINK_TEXT)]
     ]
 )
 
@@ -44,6 +47,14 @@ GAMES_KEYBOARD = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+DICE_GAME_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=DICE_BET_ON_EVEN), KeyboardButton(text=DICE_BET_ON_ODD)],
+        [KeyboardButton(text=number) for number in range(1,7)],
+        [KeyboardButton(text=BACK_TEXT)]
+    ],
+    resize_keyboard=True
+)
 
 INCREASE_INVENTORY_KEYBOARD = ReplyKeyboardMarkup(
     [
@@ -56,6 +67,12 @@ INCREASE_INVENTORY_KEYBOARD = ReplyKeyboardMarkup(
 CANCEL_KEYBOARD = ReplyKeyboardMarkup(
     [
         [KeyboardButton(text=CANCEL_TEXT)]
+    ],
+    resize_keyboard=True
+)
+BACK_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=BACK_TEXT)]
     ],
     resize_keyboard=True
 )

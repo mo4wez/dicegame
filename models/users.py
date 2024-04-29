@@ -1,4 +1,4 @@
-from peewee import Model, SqliteDatabase, CharField, ForeignKeyField
+from peewee import Model, SqliteDatabase, CharField, ForeignKeyField, IntegerField, BooleanField
 
 db = SqliteDatabase(r'C:\Users\moawe\Desktop\dicegame\models\db\users.db')
 
@@ -7,7 +7,7 @@ class User(Model):
     username = CharField(null=True)
     joined_at = CharField()
     invite_link = CharField()
-    coins = CharField()
+    coins = IntegerField()
 
     class Meta:
         database = db
@@ -19,5 +19,13 @@ class Invitation(Model):
     class Meta:
         database = db
 
+class BetResolved(Model):
+    chat_id = IntegerField(unique=True)
+    resolved = BooleanField(default=False)
+
+    class Meta:
+        database = db
+
+
 db.connect()
-db.create_tables([User, Invitation], safe=True)
+db.create_tables([User, Invitation, BetResolved], safe=True)

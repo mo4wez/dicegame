@@ -1,8 +1,6 @@
 from pyrogram import Client, filters
 from pyromod import listen, Client
 from pyrogram.types import Message
-from models.users import User
-from jdatetime import datetime
 
 from constants.messages import (
     PLAY_GAME_TEXT,
@@ -11,17 +9,18 @@ from constants.messages import (
     SUPPORT_TEXT,
     INCREASE_INVENTORY_TEXT,
     BOOK_ICON_TEXT,
-    USER_INFORMATION_TEXT,
     CANCEL_TEXT,
     BOT_INSTRUCTION_MESSAGE,
-    BOT_SUPPORT_TEXT,
     INCREASE_INVENTORY_TEXT,
     BACK_TEXT,
     RETURNED_TO_MAIN_MENU_TEXT,
 )
 from constants.keyboards import MAIN_MENU_KEYBOARD
 from .increase_inventory_module import increase_inventory
-from .games import show_games_list
+# from .transform_coins_module import transform_coins
+from .user_account_module import user_account
+from .bot_support_module import bot_support
+from .games_list_module import show_games_list
 
 
 @Client.on_message(filters.text)
@@ -52,32 +51,3 @@ async def menu_commands(client: Client, message: Message):
             text=RETURNED_TO_MAIN_MENU_TEXT,
             reply_markup=MAIN_MENU_KEYBOARD
         )
-
-@Client.on_message(filters.regex(BOT_SUPPORT_TEXT))
-async def bot_support(client: Client, message: Message):
-    chat_id = message.chat.id
-
-    await client.send_message(
-        chat_id=chat_id,
-        text=BOT_SUPPORT_TEXT,
-    )
-
-# transform coins
-@Client.on_message(filters.regex(TRANSFORM_COINS_TEXT))
-async def transform_coins(client: Client, message: Message):
-    pass
-
-# user account
-@Client.on_message(filters.regex(USER_ACCOUNT_TEXT))
-async def user_account(client: Client, message: Message):
-    chat_id = message.chat.id
-    now = datetime.now()
-    formatted_datetime = now.strftime('%Y/%m/%d %H:%M:%S')
-
-    user = User.get(User.chat_id==chat_id)
-    invitations_count = str(len(user.invitations))
-
-    await client.send_message(
-        chat_id=chat_id,
-        text=USER_INFORMATION_TEXT.format(user.chat_id, user.joined_at, invitations_count, user.coins, formatted_datetime),
-    )

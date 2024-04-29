@@ -8,7 +8,6 @@ from constants.messages import (
     TRANSFORM_NITROSEEN_TEXT,
     USER_INVITE_LINK,
     INVITE_MESSAGE,
-    INVITE_INFO_TEXT,
     INVITE_USER_TEXT,
 )
 from constants.keyboards import (
@@ -17,7 +16,7 @@ from constants.keyboards import (
 
 import string, random, re
 
-@Client.on_message(filters.text & filters.regex(INCREASE_INVENTORY_TEXT))
+@Client.on_message(filters.regex(INCREASE_INVENTORY_TEXT))
 async def increase_inventory(client: Client, message: Message):
     chat_id = message.chat.id
 
@@ -27,11 +26,11 @@ async def increase_inventory(client: Client, message: Message):
         reply_markup=INCREASE_INVENTORY_KEYBOARD
     )
 
-@Client.on_message(filters.text & filters.regex(TRANSFORM_NITROSEEN_TEXT))
+@Client.on_message(filters.regex(TRANSFORM_NITROSEEN_TEXT))
 async def transform_nitroseen(client: Client, message: Message):
     await message.reply_text('transform')
 
-@Client.on_message(filters.text & filters.regex(INVITE_USER_TEXT))
+@Client.on_message(filters.regex(INVITE_USER_TEXT))
 async def invite_user(client: Client, message: Message):
     chat_id = message.chat.id
     try:
