@@ -1,16 +1,12 @@
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyromod import listen, Client
-from models.users import User, BetResolved
+from models.users import BetResolved
 from constants.messages import (
     DICE_GAME_TEXT,
-    BET_AMOUNT_QUESTION_TEXT,
     DICE_GAME_INFO,
-    VALID_BET_AMOUNT_TEXT,
-    COINS_NOT_ENOUGH,
     BACK_TEXT,
     RETURNED_TO_MAIN_MENU_TEXT,
-    DONT_SEND_INVALID_INPUT,
     DICE_BET_ON_EVEN,
     DICE_BET_ON_ODD,
     NUMBERS_STR_LIST,
@@ -22,71 +18,19 @@ from constants.messages import (
     DICE_GAME_NUMBERS_BET_LOSE,
     YOU_LOSE,
     YOU_WIN,
-    MAIN_CHANNEL_LINK_TEXT,
+    MAIN_CHANNEL_ID_TEXT,
     )
-from constants.keyboards import BACK_KEYBOARD, MAIN_MENU_KEYBOARD, DICE_GAME_KEYBOARD
+from constants.keyboards import MAIN_MENU_KEYBOARD, DICE_GAME_KEYBOARD
+from .check_bet_module import dice_game_check
 
 @Client.on_message(filters.regex(DICE_GAME_TEXT))
-async def dice_game(client: Client, message: Message):
-    chat_id = message.chat.id
-
-    bet_resolved_entry, created = BetResolved.get_or_create(chat_id=chat_id, defaults={'resolved': False})
-    bet_resolved_entry.resolved = False
-    bet_resolved_entry.save()
-    
-    try:
-        global user
-        global bet_amount
-        user = User.get(User.chat_id == chat_id)
-        bet_amount = await client.ask(
-            chat_id=chat_id,
-            text=BET_AMOUNT_QUESTION_TEXT.format(user.coins),
-            reply_markup=BACK_KEYBOARD
-            )
-
-        while True:
-            if bet_amount.text == BACK_TEXT:
-                print(bet_amount.text)
-                await client.send_message(
-                    chat_id=chat_id,
-                    text=RETURNED_TO_MAIN_MENU_TEXT,
-                    reply_markup=MAIN_MENU_KEYBOARD
-                )
-                break
-            if not bet_amount.text.isdigit():
-                print(bet_amount.text)
-                bet_amount = await client.ask(chat_id, text=DONT_SEND_INVALID_INPUT)
-                continue
-            if not 100 <= int(bet_amount.text) <= 10000:
-                print(bet_amount.text)
-                bet_amount = await client.ask(chat_id, text=VALID_BET_AMOUNT_TEXT)
-                continue
-            if int(bet_amount.text) > int(user.coins):
-                print(bet_amount.text)
-                await client.send_message(
-                    chat_id=chat_id,
-                    text=COINS_NOT_ENOUGH,
-                    reply_markup=MAIN_MENU_KEYBOARD
-                )
-                break
-            user.coins = int(user.coins) - int(bet_amount.text)
-            user.save()
-            await client.send_message(
-                chat_id=chat_id,
-                text=DICE_GAME_INFO,
-                reply_markup=DICE_GAME_KEYBOARD
-            )
-            break
-    except User.DoesNotExist:
-        await client.send_message(
-            chat_id=chat_id,
-            text='Error in getting user.'
-        )
+async def dice_game_start(client: Client, message: Message):
+    global bet_amount, user
+    bet_amount, user = await dice_game_check(client, message, text_message=DICE_GAME_INFO, game_keyboard=DICE_GAME_KEYBOARD)
 
 
 @Client.on_message(filters.regex(DICE_BET_ON_EVEN) | filters.regex(DICE_BET_ON_ODD))
 async def bet_odd_or_even(client: Client, message: Message):
-    global last_dice_text
     chat_id = message.chat.id
     message_text = message.text
     channel_id = 'dicegametestpy'
@@ -108,12 +52,17 @@ async def bet_odd_or_even(client: Client, message: Message):
         print(dice_text)
 
         if dice_values[0] % 2 == 0 and dice_values[1] % 2 == 0:
+            # remove coins from user
+            user.coins = int(user.coins) - int(bet_amount.text)
             bet_win_coins = int(bet_amount.text) * 2
             user.coins = int(user.coins) + bet_win_coins
             user.save()
             await client.send_message(
                 chat_id=chat_id,
-                text=YOU_WIN,
+                text=YOU_WIN.format(
+                    MAIN_CHANNEL_ID_TEXT,
+                    dice_text.id
+                ),
                 reply_markup=MAIN_MENU_KEYBOARD
             )
             await client.send_message(
@@ -127,6 +76,8 @@ async def bet_odd_or_even(client: Client, message: Message):
                 reply_to_message_id=dice_text.id
             )
         else:
+            user.coins = int(user.coins) - int(bet_amount.text)
+            user.save()
             await client.send_message(
                 chat_id=chat_id,
                 text=YOU_LOSE,
@@ -155,12 +106,16 @@ async def bet_odd_or_even(client: Client, message: Message):
             dice_values.append(dice_text.dice.value)
 
         if not dice_values[0] % 2 == 0 and not dice_values[1] % 2 == 0:
+            user.coins = int(user.coins) - int(bet_amount.text)
             bet_win_coins = int(bet_amount.text) * 2
             user.coins = int(user.coins) + bet_win_coins
             user.save()
             await client.send_message(
                 chat_id=chat_id,
-                text=YOU_WIN,
+                text=YOU_WIN.format(
+                    MAIN_CHANNEL_ID_TEXT,
+                    dice_text.id
+                ),
                 reply_markup=MAIN_MENU_KEYBOARD
             )
             await client.send_message(
@@ -174,9 +129,14 @@ async def bet_odd_or_even(client: Client, message: Message):
                 reply_to_message_id=dice_text.id
             )
         else:
+            user.coins = int(user.coins) - int(bet_amount.text)
+            user.save()
             await client.send_message(
                 chat_id=chat_id,
-                text=YOU_LOSE,
+                text=YOU_LOSE.format(
+                    MAIN_CHANNEL_ID_TEXT,
+                    dice_text.id
+                ),
                 reply_markup=MAIN_MENU_KEYBOARD
             )
             await client.send_message(
@@ -219,12 +179,16 @@ async def bet_on_numbers(client: Client, message: Message):
                 emoji='🎲',
             )
         if message_text == str(dice_text.dice.value):
+            user.coins = int(user.coins) - int(bet_amount.text)
             bet_win_coins = int(bet_amount.text) * 4
             user.coins = int(user.coins) + bet_win_coins
             user.save()
             await client.send_message(
                 chat_id=chat_id,
-                text=YOU_WIN,
+                text=YOU_WIN.format(
+                    MAIN_CHANNEL_ID_TEXT,
+                    dice_text.id
+                ),
                 reply_markup=MAIN_MENU_KEYBOARD
             )
             await client.send_message(
@@ -240,9 +204,14 @@ async def bet_on_numbers(client: Client, message: Message):
                 reply_to_message_id=dice_text.id
             )
         else:
+            user.coins = int(user.coins) - int(bet_amount.text)
+            user.save()
             await client.send_message(
                 chat_id=chat_id,
-                text=YOU_LOSE,
+                text=YOU_LOSE.format(
+                    MAIN_CHANNEL_ID_TEXT,
+                    dice_text.id
+                ),
                 reply_markup=MAIN_MENU_KEYBOARD
             )
             await client.send_message(
@@ -259,4 +228,6 @@ async def bet_on_numbers(client: Client, message: Message):
             )
         bet_resolved_entry.resolved = True
         bet_resolved_entry.save()
+
+
        
