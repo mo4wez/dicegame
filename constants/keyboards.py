@@ -19,7 +19,13 @@ from .messages import (
     SLOTMACHINE_GAME_TEXT,
     DICE_BET_ON_EVEN,
     DICE_BET_ON_ODD,
-    MAIN_CHANNEL_LINK_TEXT
+    MAIN_CHANNEL_LINK_TEXT,
+    BOWLING_GAME_0,
+    BOWLING_GAME_1,
+    BOWLING_GAME_3,
+    BOWLING_GAME_4,
+    BOWLING_GAME_5,
+    BOWLING_GAME_6
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -51,6 +57,16 @@ DICE_GAME_KEYBOARD = ReplyKeyboardMarkup(
     [
         [KeyboardButton(text=DICE_BET_ON_EVEN), KeyboardButton(text=DICE_BET_ON_ODD)],
         [KeyboardButton(text=number) for number in range(1,7)],
+        [KeyboardButton(text=BACK_TEXT)]
+    ],
+    resize_keyboard=True
+)
+
+BOWLING_GAME_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=BOWLING_GAME_0), KeyboardButton(text=BOWLING_GAME_1)],
+        [KeyboardButton(text=BOWLING_GAME_3), KeyboardButton(text=BOWLING_GAME_4)],
+        [KeyboardButton(text=BOWLING_GAME_5), KeyboardButton(text=BOWLING_GAME_6)],
         [KeyboardButton(text=BACK_TEXT)]
     ],
     resize_keyboard=True

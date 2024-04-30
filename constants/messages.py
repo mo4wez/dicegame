@@ -8,6 +8,7 @@ FORCE_JOIN_MESSAGE = '''
 👈🏻 بعد از عضویت مجددا /start را ارسال نمایید.
 '''
 # channel link
+MAIN_CHANNEL_ID_TEXT = 'dicegametestpy'
 MAIN_CHANNEL_LINK_TEXT = 'https://t.me/dicegametestpy'
 # welcome message
 WELCOME_MESSAGE = '''
@@ -68,8 +69,8 @@ COINS_NOT_ENOUGH = '❗️موجودی شما کافی نیست!'
 DONT_SEND_INVALID_INPUT = 'لطفا برای تعداد سکه ها فقط عدد ارسال کنید'
 
 # you win / lose
-YOU_WIN = f"<a href='{MAIN_CHANNEL_LINK_TEXT}'>بردی</a>"
-YOU_LOSE = f"<a href='{MAIN_CHANNEL_LINK_TEXT}'>باختی</a>"
+YOU_WIN = "<a href='https://t.me/{}/{}'>😄بردی😄</a>"
+YOU_LOSE = "<a href='https://t.me/{}/{}'>😞باختی😞</a>"
 DICE_GAME_ODD_BET_LOSE_TEXT = '''
 👤کاربر {}-{}
 
@@ -115,6 +116,37 @@ DICE_GAME_NUMBERS_BET_LOSE = '''
 
 💵شرط:{}
 ❌شرط جدیدی انجام داد باخت و تاس {} نشد.
+💰سکه شرط: {}
+🎁پاداش: {}
+'''
+# Bowling game message
+BOWLING_GAME_INFO = '''
+🎳بازی بولینگ:
+
+1.تعداد مانع هایی که میوفتن؟.(ضریب: 4.5)
+'''
+
+BOWLING_GAME_0 = 'صفر مانع'
+BOWLING_GAME_1 = 'یک مانع'
+BOWLING_GAME_3 = 'سه مانع'
+BOWLING_GAME_4 = 'چهار مانع'
+BOWLING_GAME_5 = 'پنج مانع'
+BOWLING_GAME_6 = 'شش مانع'
+
+# Blowling win or lose message
+BOWLING_GAME_WIN_MESSAGE = '''
+👤کاربر {}-{}
+
+💵شرط: {}
+✅شرط جدیدی انجام داد و برد.
+💰سکه شرط: {}
+🎁پاداش: {}
+'''
+BOWLING_GAME_LOSE_MESSAGE = '''
+👤کاربر {}-{}
+
+💵شرط: {}
+❌شرط جدیدی انجام داد و باخت.
 💰سکه شرط: {}
 🎁پاداش: {}
 '''
