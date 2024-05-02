@@ -42,7 +42,6 @@ async def bowling_game(client: Client, message: Message):
         chat_id=channel_id,
         emoji='🎳',
     )
-    boling_result_value = boling_text.dice.value
 
     if message_text == BOWLING_GAME_0 and boling_text.dice.value == 1:
             user.coins = int(user.coins) - int(bet_amount.text)
