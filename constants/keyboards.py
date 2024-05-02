@@ -30,6 +30,10 @@ from .messages import (
     ITS_NOT_GOAL,
     FUTBALL_GAME_ITS_GOAL,
     FUTBALL_GAME_ITS_NOT_GOAL,
+    DART_GAME_HITS,
+    DART_GAME_NOT_HITS,
+    DART_GAME_RED,
+    DART_GAME_WHITE,
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -87,6 +91,15 @@ BASKETBAL_GAME_KEYBOARD = ReplyKeyboardMarkup(
 FUTBALL_GAME_KEYBOARD = ReplyKeyboardMarkup(
     [
         [KeyboardButton(text=FUTBALL_GAME_ITS_NOT_GOAL), KeyboardButton(text=FUTBALL_GAME_ITS_GOAL)],
+        [KeyboardButton(text=BACK_TEXT)]
+    ],
+    resize_keyboard=True
+)
+
+DART_GAME_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=DART_GAME_HITS), KeyboardButton(text=DART_GAME_NOT_HITS)],
+        [KeyboardButton(text=DART_GAME_RED), KeyboardButton(text=DART_GAME_WHITE)],
         [KeyboardButton(text=BACK_TEXT)]
     ],
     resize_keyboard=True
