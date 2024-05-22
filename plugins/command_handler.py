@@ -27,7 +27,6 @@ async def start(client: Client, message: Message):
     if start_text:
         try:
             inviter = User.get(User.invite_link == start_text)
-
             if not Invitation.select().where(Invitation.inviter == inviter, Invitation.invited_user == chat_id).exists():
                 if inviter.chat_id != str(chat_id):
                     inviter_coins = int(inviter.coins)
