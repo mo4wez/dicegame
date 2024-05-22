@@ -2,5 +2,5 @@
 .env
 *.db
 *.session
-*.session-journal
 *.pyc
+*.session-journal
