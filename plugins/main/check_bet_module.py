@@ -1,4 +1,4 @@
-from pyrogram import Client, filters
+from pyrogram import Client
 from pyrogram.types import Message
 from pyromod import listen, Client
 from models.users import User, BetResolved
@@ -10,7 +10,7 @@ from constants.messages import (
     RETURNED_TO_MAIN_MENU_TEXT,
     DONT_SEND_INVALID_INPUT,
     )
-from constants.keyboards import BACK_KEYBOARD, MAIN_MENU_KEYBOARD, DICE_GAME_KEYBOARD
+from constants.keyboards import BACK_KEYBOARD, MAIN_MENU_KEYBOARD
 
 
 async def dice_game_check(client: Client, message: Message, text_message, game_keyboard):
