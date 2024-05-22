@@ -34,6 +34,7 @@ from .messages import (
     DART_GAME_NOT_HITS,
     DART_GAME_RED,
     DART_GAME_WHITE,
+    DO_BET,
     )
 
 JOIN_TO_CHANNEL_KEYBOARD = InlineKeyboardMarkup(
@@ -100,6 +101,14 @@ DART_GAME_KEYBOARD = ReplyKeyboardMarkup(
     [
         [KeyboardButton(text=DART_GAME_HITS), KeyboardButton(text=DART_GAME_NOT_HITS)],
         [KeyboardButton(text=DART_GAME_RED), KeyboardButton(text=DART_GAME_WHITE)],
+        [KeyboardButton(text=BACK_TEXT)]
+    ],
+    resize_keyboard=True
+)
+
+SLOT_MACHINE_GAME_KEYBOARD = ReplyKeyboardMarkup(
+    [
+        [KeyboardButton(text=DO_BET)],
         [KeyboardButton(text=BACK_TEXT)]
     ],
     resize_keyboard=True
