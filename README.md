@@ -12,7 +12,7 @@ Dice Game Bot is a Telegram game bot built using Pyrogram. Users have some coins
 - [Contact](#contact)
 
 ## Screenshots
-Screenshots
+
 <!-- Slideshow -->
 <div style="text-align: center;">
   <img src="https://github.com/mo4wez/dicegame/assets/44638454/4a86dce8-d712-4f70-a987-51dd8b0266c5" alt="mainmenu" width="300" style="display: inline-block;">
