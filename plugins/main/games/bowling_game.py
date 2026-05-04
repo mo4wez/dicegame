@@ -133,7 +133,7 @@ async def bowling_game(client: Client, message: Message):
                 text=BOWLING_GAME_WIN_MESSAGE.format(
                     chat_id,
                     user_first_name,
-                    BOWLING_GAME_0,
+                    BOWLING_GAME_4,
                     bet_amount.text,
                     bet_win_coins
                 ),
